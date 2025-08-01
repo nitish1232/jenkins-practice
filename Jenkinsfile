@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('Without docker') {
             steps {
-                cleanWs()
                 sh '''
                   echo "Hello from outside container"
                   ls -al
