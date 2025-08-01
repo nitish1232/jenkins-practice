@@ -28,7 +28,10 @@ pipeline {
                 echo 'Hello from inside container'
                 sh '''
                   ls -al
-                  touch hello2.txt
+                  node --version
+                  npm --version
+                  npm ci
+                  npm run build
                 '''
             }
         }
