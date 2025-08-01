@@ -36,6 +36,16 @@ pipeline {
                 '''
             }
         }
+
+        stage('Test') {
+            steps {
+                echo "Testing the package"
+                sh '''
+                  ls build | grep index
+                  npm test
+                '''
+            }
+        }
     }
 }
 
