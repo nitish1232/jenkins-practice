@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('NpmTest') {
             agent {
                 docker {
                     image "node:18-alpine"
@@ -59,6 +59,7 @@ pipeline {
             agent {
                 docker {
                     image "mcr.microsoft.com/playwright:v1.54.0-noble"
+                    args "-u root"
                     reuseNode true
                 }
             }
@@ -66,8 +67,8 @@ pipeline {
             steps {
                 echo "Testing the package with playwright"
                 sh '''
-                  npm install serve
-                  node_modules/.bin/serve -s build &
+                  npm install -g serve
+                  serve -s build &
                   sleep 20
                   npx playwright test
                 '''
