@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Without docker') {
             steps {
+                cleanWs()
                 sh '''
                   echo "Hello from outside container"
                   ls -al
@@ -51,6 +52,25 @@ pipeline {
                 sh '''
                   test -f build/index.html
                   npm test
+                '''
+            }
+        }
+
+        stage('End to End with playwright') {
+            agent {
+                docker {
+                    image "mcr.microsoft.com/playwright:v1.54.0-noble"
+                    reuseNode true
+                }
+            }
+
+            steps {
+                echo "Testing the package with playwright"
+                sh '''
+                  npm install serve
+                  node_modules/.bin/serve -s build &
+                  sleep 20
+                  npx playwright test
                 '''
             }
         }
